@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<appender name="STDOUT"
+		class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSSS}| %p | %logger{3} | %X{RequestId} | %m%n</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="APPLOGFILE"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>/tmp/logs/ps/app.log</file>
+		<rollingPolicy
+			class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>/tmp/logs/ps/app.%d{yyyy-MM-dd}.%i.log
+			</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>1MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSSS} | %p | %logger{3} | %X{RequestId} | %m%n</pattern>
+		</encoder>
+	</appender>
+
+	<root level="error">
+		<appender-ref ref="APPLOGFILE" />
+	</root>
+	<logger
+		name="org.springframework.boot.web.embedded.tomcat.TomcatWebServer"
+		level="info">
+		<appender-ref ref="APPLOGFILE" />
+	</logger>
+	<logger name="org.apache.kafka.clients" level="info">
+		<appender-ref ref="APPLOGFILE" />
+	</logger>
+	<logger name="org.apache.kafka.common" level="info">
+		<appender-ref ref="APPLOGFILE" />
+	</logger>
+	<logger name="com.ws.aop" level="info"  additivity="false">
+		<appender-ref ref="STDOUT" />
+	</logger>
+
+	<logger name="com.ws" level="info"  additivity="false">
+		<appender-ref ref="STDOUT" />
+	</logger>
+
+</configuration>
